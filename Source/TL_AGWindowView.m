@@ -21,16 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AGWindowView.h"
+#import "TL_AGWindowView.h"
 #import <QuartzCore/QuartzCore.h>
 
 static NSMutableArray *_activeWindowViews;
 
-@interface AGWindowView ()
+@interface TL_AGWindowView ()
 
 @end
 
-@implementation AGWindowView
+@implementation TL_AGWindowView
 
 #if __has_feature(objc_arc)
 # define AGWV_RETAIN(xx) do { \
@@ -111,14 +111,14 @@ static NSMutableArray *_activeWindowViews;
 
 - (void)setup
 {    
-    _supportedInterfaceOrientations = AGInterfaceOrientationMaskAll;
+    _supportedInterfaceOrientations = TL_AGInterfaceOrientationMaskAll;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 }
 
-- (void)setSupportedInterfaceOrientations:(AGInterfaceOrientationMask)supportedInterfaceOrientations
+- (void)setSupportedInterfaceOrientations:(TL_AGInterfaceOrientationMask)supportedInterfaceOrientations
 {
     _supportedInterfaceOrientations = supportedInterfaceOrientations;
     
@@ -140,7 +140,7 @@ static NSMutableArray *_activeWindowViews;
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations
 {
     UIInterfaceOrientation orientation = [self desiredOrientation];
-    CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
+    CGFloat angle = TL_UIInterfaceOrientationAngleOfOrientation(orientation);
     CGFloat statusBarHeight = [[self class] getStatusBarHeight];
     UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
@@ -202,22 +202,22 @@ static BOOL IS_BELOW_IOS_7()
 - (UIInterfaceOrientation)desiredOrientation
 {
     UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    AGInterfaceOrientationMask statusBarOrientationAsMask = AGInterfaceOrientationMaskFromOrientation(statusBarOrientation);
+    TL_AGInterfaceOrientationMask statusBarOrientationAsMask = TL_AGInterfaceOrientationMaskFromOrientation(statusBarOrientation);
     if(self.supportedInterfaceOrientations & statusBarOrientationAsMask)
     {
         return statusBarOrientation;
     }
     else
     {
-        if(self.supportedInterfaceOrientations & AGInterfaceOrientationMaskPortrait)
+        if(self.supportedInterfaceOrientations & TL_AGInterfaceOrientationMaskPortrait)
         {
             return UIInterfaceOrientationPortrait;
         }
-        else if(self.supportedInterfaceOrientations & AGInterfaceOrientationMaskLandscapeLeft)
+        else if(self.supportedInterfaceOrientations & TL_AGInterfaceOrientationMaskLandscapeLeft)
         {
             return UIInterfaceOrientationLandscapeLeft;
         }
-        else if(self.supportedInterfaceOrientations & AGInterfaceOrientationMaskLandscapeRight)
+        else if(self.supportedInterfaceOrientations & TL_AGInterfaceOrientationMaskLandscapeRight)
         {
             return UIInterfaceOrientationLandscapeRight;
         }
@@ -371,10 +371,10 @@ static BOOL IS_BELOW_IOS_7()
     return _activeWindowViews;
 }
 
-+ (AGWindowView *)firstActiveWindowViewPassingTest:(BOOL (^)(AGWindowView *windowView, BOOL *stop))test
++ (TL_AGWindowView *)firstActiveWindowViewPassingTest:(BOOL (^)(TL_AGWindowView *windowView, BOOL *stop))test
 {
-    __block AGWindowView *hit = nil;
-    [_activeWindowViews enumerateObjectsUsingBlock:^(AGWindowView *windowView, NSUInteger idx, BOOL *stop) {
+    __block TL_AGWindowView *hit = nil;
+    [_activeWindowViews enumerateObjectsUsingBlock:^(TL_AGWindowView *windowView, NSUInteger idx, BOOL *stop) {
         if(test(windowView, stop))
         {
             hit = windowView;
@@ -383,9 +383,9 @@ static BOOL IS_BELOW_IOS_7()
     return hit;
 }
 
-+ (AGWindowView *)activeWindowViewForController:(UIViewController *)controller
++ (TL_AGWindowView *)activeWindowViewForController:(UIViewController *)controller
 {
-    return [self firstActiveWindowViewPassingTest:^BOOL(AGWindowView *windowView, BOOL *stop) {
+    return [self firstActiveWindowViewPassingTest:^BOOL(TL_AGWindowView *windowView, BOOL *stop) {
         if(windowView.controller == controller)
         {
             return YES;
@@ -394,9 +394,9 @@ static BOOL IS_BELOW_IOS_7()
     }];
 }
 
-+ (AGWindowView *)activeWindowViewContainingView:(UIView *)view
++ (TL_AGWindowView *)activeWindowViewContainingView:(UIView *)view
 {
-    return [self firstActiveWindowViewPassingTest:^BOOL(AGWindowView *windowView, BOOL *stop) {
+    return [self firstActiveWindowViewPassingTest:^BOOL(TL_AGWindowView *windowView, BOOL *stop) {
         return [view isDescendantOfView:windowView];
     }];
 }
@@ -404,9 +404,9 @@ static BOOL IS_BELOW_IOS_7()
 @end
 
 
-@implementation AGWindowViewHelper
+@implementation TL_AGWindowViewHelper
 
-BOOL UIInterfaceOrientationsIsForSameAxis(UIInterfaceOrientation o1, UIInterfaceOrientation o2)
+BOOL TL_UIInterfaceOrientationsIsForSameAxis(UIInterfaceOrientation o1, UIInterfaceOrientation o2)
 {
     if(UIInterfaceOrientationIsLandscape(o1) && UIInterfaceOrientationIsLandscape(o2))
     {
@@ -422,15 +422,15 @@ BOOL UIInterfaceOrientationsIsForSameAxis(UIInterfaceOrientation o1, UIInterface
     }
 }
 
-CGFloat UIInterfaceOrientationAngleBetween(UIInterfaceOrientation o1, UIInterfaceOrientation o2)
+CGFloat TL_UIInterfaceOrientationAngleBetween(UIInterfaceOrientation o1, UIInterfaceOrientation o2)
 {
-    CGFloat angle1 = UIInterfaceOrientationAngleOfOrientation(o1);
-    CGFloat angle2 = UIInterfaceOrientationAngleOfOrientation(o2);
+    CGFloat angle1 = TL_UIInterfaceOrientationAngleOfOrientation(o1);
+    CGFloat angle2 = TL_UIInterfaceOrientationAngleOfOrientation(o2);
     
     return angle1 - angle2;
 }
 
-CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation)
+CGFloat TL_UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation)
 {
     CGFloat angle;
     
@@ -453,7 +453,7 @@ CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientat
     return angle;
 }
 
-AGInterfaceOrientationMask AGInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation)
+TL_AGInterfaceOrientationMask TL_AGInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation)
 {
     return 1 << orientation;
 }

@@ -23,16 +23,16 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "AGWindowViewDefines.h"
+#import "TL_AGWindowViewDefines.h"
 
 /**
  * @class AGWindowView
  * @description A view which is added to a UIWindow. It will automatically fill window and rotate along with statusbar rotations.
  */
 
-@interface AGWindowView : UIView
+@interface TL_AGWindowView : UIView
 
-@property (nonatomic, assign) AGInterfaceOrientationMask supportedInterfaceOrientations;
+@property (nonatomic, assign) TL_AGInterfaceOrientationMask supportedInterfaceOrientations;
 
 /**
  * @property UIViewController *controller. Convinience for having a strong reference to your controller.
@@ -54,17 +54,17 @@
 - (BOOL)isInFront;
 
 + (NSArray *)allActiveWindowViews;
-+ (AGWindowView *)firstActiveWindowViewPassingTest:(BOOL (^)(AGWindowView *windowView, BOOL *stop))test;
-+ (AGWindowView *)activeWindowViewForController:(UIViewController *)controller;
-+ (AGWindowView *)activeWindowViewContainingView:(UIView *)view;
++ (TL_AGWindowView *)firstActiveWindowViewPassingTest:(BOOL (^)(TL_AGWindowView *windowView, BOOL *stop))test;
++ (TL_AGWindowView *)activeWindowViewForController:(UIViewController *)controller;
++ (TL_AGWindowView *)activeWindowViewContainingView:(UIView *)view;
 
 @end
 
-@interface AGWindowViewHelper : NSObject
+@interface TL_AGWindowViewHelper : NSObject
 
-BOOL UIInterfaceOrientationsIsForSameAxis(UIInterfaceOrientation o1, UIInterfaceOrientation o2);
-CGFloat UIInterfaceOrientationAngleBetween(UIInterfaceOrientation o1, UIInterfaceOrientation o2);
-CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation);
-AGInterfaceOrientationMask AGInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation);
+BOOL TL_UIInterfaceOrientationsIsForSameAxis(UIInterfaceOrientation o1, UIInterfaceOrientation o2);
+CGFloat TL_UIInterfaceOrientationAngleBetween(UIInterfaceOrientation o1, UIInterfaceOrientation o2);
+CGFloat TL_UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation);
+TL_AGInterfaceOrientationMask TL_AGInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation);
 
 @end
