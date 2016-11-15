@@ -23,6 +23,7 @@
 
 #import "TL_AGWindowView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "TLLog.h"
 
 static NSMutableArray *_activeWindowViews;
 
@@ -254,15 +255,15 @@ static BOOL IS_BELOW_IOS_7()
 
 - (void)assertCorrectHirearchy
 {
-    if(self.window != nil)
-    {
-        if(self.superview != self.window)
-        {
-            [NSException raise:NSInternalInconsistencyException format:@"AGWindowView should only be added directly on UIWindow"];
+    if(self.window != nil) {
+        if (self.superview != self.window) {
+            NSException* ex = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"AGWindowView should only be added directly on UIWindow" userInfo:nil];
+            TLLog_Exception(ex, @"AGWindowView superview");
         }
-        if([self.window.subviews indexOfObject:self] == 0)
-        {
-            [NSException raise:NSInternalInconsistencyException format:@"AGWindowView is not meant to be first subview on window since UIWindow automatically rotates the first view for you."];
+        if ([self.window.subviews indexOfObject:self] == 0) {
+            NSString* reason = @"AGWindowView is not meant to be first subview on window since UIWindow automatically rotates the first view for you.";
+            NSException* ex = [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+            TLLog_Exception(ex, @"AGWindowView subviews");
         }
     }
 }
@@ -280,9 +281,10 @@ static BOOL IS_BELOW_IOS_7()
 
 - (void)addSubViewAndKeepSamePosition:(UIView *)view
 {
-    if(view.superview == nil)
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"When calling %s we are expecting the view to be moved is already in a view hierarchy.", __PRETTY_FUNCTION__];
+    if(view.superview == nil) {
+        NSString* reason = [NSString stringWithFormat:@"When calling %s we are expecting the view to be moved is already in a view hierarchy.", __PRETTY_FUNCTION__];
+        NSException* ex = [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+        TLLog_Exception(ex, @"AGWindowView superview nil");
     }
     
     view.frame = [view convertRect:view.bounds toView:self];
